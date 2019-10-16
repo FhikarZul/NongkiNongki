@@ -25,8 +25,6 @@
                 android:id="@+id/bannerSlider"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_alignStart="@+id/null"
-                android:layout_alignTop="@+id/null"
                 android:scaleType="fitXY" />
         </FrameLayout>
 
