@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -17,13 +18,13 @@ import java.util.List;
 import id.co.ewalabs.nongki_nongki.R;
 import id.co.ewalabs.nongki_nongki.util.CustomVolleyRequest;
 
-public class SliderAdapter extends PagerAdapter {
+public class RecommendedAdapter extends PagerAdapter {
     private List<RecommendedModel> bannerList;
     private Context context;
     private LayoutInflater layoutInflater;
     private ImageLoader imageLoader;
 
-    public SliderAdapter(List<RecommendedModel> bannerList, Context context) {
+    public RecommendedAdapter(List<RecommendedModel> bannerList, Context context) {
         this.bannerList = bannerList;
         this.context = context;
     }
@@ -31,7 +32,7 @@ public class SliderAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return bannerList.size();
     }
 
     @Override
@@ -43,16 +44,16 @@ public class SliderAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.recommended_item, container, false);
-        ImageView banner = view.findViewById(R.id.bannerSlider);
+        final ImageView banner = view.findViewById(R.id.bannerSlider);
         imageLoader = CustomVolleyRequest.getInstance(context).getImageLoader();
-        imageLoader.get(bannerList.get(position).getTumbCafe(), ImageLoader.getImageListener(banner, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
+        imageLoader.get(bannerList.get(position).getThumbCafe(), ImageLoader.getImageListener(banner, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
         ViewPager vp = (ViewPager) container;
         banner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(context, MakananDetailActivity.class);
-//                Common.common_makanan = bannerList.get(position);
-//                context.startActivity(intent);
+
+                Toast.makeText(context, String.valueOf(bannerList.get(position).getIdCafe()), Toast.LENGTH_SHORT).show();
+
             }
         });
         vp.addView(view, 0);

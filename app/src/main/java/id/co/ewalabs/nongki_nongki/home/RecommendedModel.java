@@ -1,16 +1,17 @@
 package id.co.ewalabs.nongki_nongki.home;
 
 public class RecommendedModel {
-    private String tumbCafe;
     private int idCafe;
+    private String thumbCafe;
 
-    public RecommendedModel(String tumbCafe, int idCafe) {
-        this.tumbCafe = tumbCafe;
+
+    public RecommendedModel(int idCafe, String thumbCafe) {
         this.idCafe = idCafe;
+        this.thumbCafe = thumbCafe;
     }
 
-    public String getTumbCafe() {
-        return tumbCafe;
+    public String getThumbCafe() {
+        return thumbCafe;
     }
 
     public int getIdCafe() {

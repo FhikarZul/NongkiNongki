@@ -1,18 +1,25 @@
 package id.co.ewalabs.nongki_nongki.home;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,25 +42,37 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView[] dots;
     private ViewPager viewPager;
     private List<RecommendedModel> bannerList;
-    private SliderAdapter sliderAdapter;
+    private List<DaftarCafeModel> listDaftarCafe;
+    private RecommendedAdapter recommendedAdapter;
     private static int NUM_PAGES = 0;
     private static int currentPage = 0;
-    private String RECOMMENDED_URL="http://"+ipAddress+"/";
+    private RecyclerView recyclerView;
+    private DaftarCafeAdapter daftarCafeAdapter;
+    private String RECOMMENDED_URL = "http://" + ipAddress + "/NONGKI_SERVER/API/tampil_daftar_cafe_recommended.php";
+    private String DAFTAR_CAFE_URL = "http://" + ipAddress + "/NONGKI_SERVER/API/tampil_daftar_cafe.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
         setContentView(R.layout.home_main);
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        sliderDotspanel = (LinearLayout) findViewById(R.id.sliderDots);
-
+        viewPager = findViewById(R.id.viewPager);
+        sliderDotspanel = findViewById(R.id.sliderDots);
+        recyclerView = findViewById(R.id.rvSemuaCafe);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(HomeActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
 
         loadRecommendedBanner();
+        loadDaftarCafe();
     }
 
 
-    private void loadRecommendedBanner(){
+    private void loadRecommendedBanner() {
 
         bannerList = new ArrayList<>();
 
@@ -61,13 +80,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
 
-                for(int i = 0; i < response.length(); i++){
+                for (int i = 0; i < response.length(); i++) {
 
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
                         RecommendedModel recommendedModel = new RecommendedModel(
-                                jsonObject.getString("id_makanan"),
-                                jsonObject.getInt("nama_makanan")
+                                jsonObject.getInt("id_cafe"),
+                                "http://" + ipAddress + "/" + jsonObject.getString("thumbnail")
                         );
 
                         bannerList.add(recommendedModel);
@@ -78,14 +97,14 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
 
-                sliderAdapter = new SliderAdapter(bannerList, HomeActivity.this);
+                recommendedAdapter = new RecommendedAdapter(bannerList, HomeActivity.this);
 
-                viewPager.setAdapter(sliderAdapter);
+                viewPager.setAdapter(recommendedAdapter);
 
-                dotscount = sliderAdapter.getCount();
+                dotscount = recommendedAdapter.getCount();
                 dots = new ImageView[dotscount];
 
-                for(int i = 0; i < dotscount; i++){
+                for (int i = 0; i < dotscount; i++) {
 
                     dots[i] = new ImageView(HomeActivity.this);
                     dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.default_dot));
@@ -99,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.selected_dot));
-                NUM_PAGES =bannerList.size();
+                NUM_PAGES = bannerList.size();
 
                 // Auto start of viewpager
                 final Handler handler = new Handler();
@@ -138,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
-                for(int i = 0; i< dotscount; i++){
+                for (int i = 0; i < dotscount; i++) {
                     dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.default_dot));
                 }
 
@@ -151,6 +170,52 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void loadDaftarCafe() {
+        listDaftarCafe=new ArrayList<>();
+        JsonArrayRequest jsonArrayRequestDaftarCafe = new JsonArrayRequest(Request.Method.GET, DAFTAR_CAFE_URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                try {
+
+                    for (int a = 0; a < response.length(); a++) {
+                        JSONObject daftarCafe = response.getJSONObject(a);
+
+                        listDaftarCafe.add(new DaftarCafeModel(
+                                daftarCafe.getInt("id_cafe"),
+                                "http://" + ipAddress + "/" + daftarCafe.getString("thumbnail"),
+                                daftarCafe.getString("nama_cafe"),
+                                daftarCafe.getInt("jumlah_komentar"),
+                                daftarCafe.getInt("jumlah_like")
+
+                        ));
+
+
+                    }
+
+
+                    daftarCafeAdapter = new DaftarCafeAdapter(HomeActivity.this, listDaftarCafe);
+                    recyclerView.setAdapter(daftarCafeAdapter);
+
+
+                } catch (JSONException e) {
+                    System.out.println(e);
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(HomeActivity.this);
+        requestQueue.add(jsonArrayRequestDaftarCafe);
 
     }
 }
