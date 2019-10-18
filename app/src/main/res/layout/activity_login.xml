@@ -4,89 +4,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    tools:showIn="@layout/activity_login">
+    tools:context=".view.LoginActivity"
+    tools:layout_editor_absoluteY="81dp">
+
+    <RelativeLayout
+        android:id="@+id/rootView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/login_background" />
+        <ImageView
+            android:id="@+id/image_ariana"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:alpha="0.1"
+            android:src="@drawable/background" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/nunito_bold"
+        android:text="Masuk"
+        android:textColor="@android:color/white"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="32dp"
+        android:paddingRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foregroundGravity="center"/>
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="Email"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:ems="10"
+            android:hint="Tulis email anda"
+            android:padding="15dp"
+            android:textColor="@color/black_main"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="Password"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:ems="10"
+            android:hint="Tulis password anda"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:textColor="@color/black_main"
+            android:textSize="12sp" />
+
         <Button
-            android:id="@+id/btn_signout"
-            android:layout_width="match_parent"
+            android:layout_marginTop="32dp"
+            android:layout_gravity="center"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Logout"
-            android:visibility="gone"
-            android:layout_marginBottom="10dp"/>
+            android:text="Login"
+            android:textAllCaps="false"
+            android:background="@drawable/button_white"
+            android:textColor="@color/colorRose"/>
 
-        <Button
-            android:id="@+id/btn_revoke"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="Revoke"/>
+            android:text="atau"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/nunito"
+            android:textSize="20sp"/>
 
-        <RelativeLayout
-            android:id="@+id/lprofil"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+        <LinearLayout
+            android:id="@+id/btn_google_login"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:gravity="center"
+            android:background="@drawable/button_white">
             <ImageView
-                android:id="@+id/im_user"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                app:srcCompat="@android:drawable/btn_plus" />
-
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/google"/>
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/im_user"
-                android:layout_toRightOf="@+id/im_user"
-                android:text="Nama :"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/textView"
-                android:layout_alignRight="@+id/textView"
-                android:layout_below="@+id/textView"
-                android:text="Email :"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <TextView
-                android:id="@+id/tx_nama"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="14dp"
-                android:layout_marginStart="14dp"
-                android:layout_toEndOf="@+id/textView"
-                android:layout_toRightOf="@+id/textView"
-                android:text="field nama" />
-
-            <TextView
-                android:id="@+id/tx_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tx_nama"
-                android:layout_alignStart="@+id/tx_nama"
-                android:layout_below="@+id/tx_nama"
-                android:text="field email" />
-
-        </RelativeLayout>
-
+                android:text="Google akun"
+                android:textColor="@color/colorRose"
+                android:fontFamily="@font/nunito_bold"/>
+        </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

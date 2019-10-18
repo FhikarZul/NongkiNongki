@@ -1,7 +1,8 @@
-package id.co.ewalabs.nongki_nongki;
+package id.co.ewalabs.nongki_nongki.view;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import id.co.ewalabs.nongki_nongki.R;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +30,7 @@ import com.squareup.picasso.Picasso;
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 12345; //semacam kunci
-    SignInButton signInButton;
-    Button btnOut,btnRevoke;
-    RelativeLayout lProfil;
-    TextView txNama,txEmail;
-    ImageView imgProfile;
+    LinearLayout signInButton;
     String nama,email,url;
 
     GoogleApiClient googleApiClient;
@@ -50,33 +48,11 @@ public class LoginActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        txNama=findViewById(R.id.tx_nama);
-        txEmail=findViewById(R.id.tx_email);
-        imgProfile=findViewById(R.id.im_user);
-
-        signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton = findViewById(R.id.btn_google_login);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signIn();
-            }
-        });
-
-        lProfil=findViewById(R.id.lprofil);
-        btnOut=findViewById(R.id.btn_signout);
-        btnOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
-
-        btnRevoke=findViewById(R.id.btn_revoke);
-        btnRevoke.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                revokeAccess();
             }
         });
 
@@ -100,14 +76,10 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 if (isSignedIn) {
                     signInButton.setVisibility(View.GONE);
-                    btnOut.setVisibility(View.VISIBLE);
-                    btnRevoke.setVisibility(View.VISIBLE);
-                    lProfil.setVisibility(View.VISIBLE);
+
                 } else {
                     signInButton.setVisibility(View.VISIBLE);
-                    btnOut.setVisibility(View.GONE);
-                    btnRevoke.setVisibility(View.GONE);
-                    lProfil.setVisibility(View.GONE);
+
                 }
             }
         });
@@ -140,11 +112,6 @@ public class LoginActivity extends AppCompatActivity {
                 url  = acct.getPhotoUrl().toString();
             }
 
-            Toast.makeText(this, "Gambar : "+url, Toast.LENGTH_LONG).show();
-
-            txNama.setText(nama);
-            txEmail.setText(email);
-            Picasso.get().load(url).into(imgProfile);
             updateUI(true);
         } else {
             updateUI(false);
