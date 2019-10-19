@@ -1,11 +1,17 @@
 package id.co.ewalabs.nongki_nongki.home;
 
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
+import android.provider.Settings;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +37,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import id.co.ewalabs.nongki_nongki.R;
+import id.co.ewalabs.nongki_nongki.home.cafe_terdekat.CafeTerdekatActivity;
+import id.co.ewalabs.nongki_nongki.home.pencarian.PencarianActivity;
 import id.co.ewalabs.nongki_nongki.util.CustomVolleyRequest;
 
 import static id.co.ewalabs.nongki_nongki.IPAddress.ipAddress;
@@ -42,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView[] dots;
     private ViewPager viewPager;
     private List<RecommendedModel> bannerList;
-    private List<DaftarCafeModel> listDaftarCafe;
+    private ArrayList<DaftarCafeModel> listDaftarCafe;
     private RecommendedAdapter recommendedAdapter;
     private static int NUM_PAGES = 0;
     private static int currentPage = 0;
@@ -50,6 +58,9 @@ public class HomeActivity extends AppCompatActivity {
     private DaftarCafeAdapter daftarCafeAdapter;
     private String RECOMMENDED_URL = "http://" + ipAddress + "/NONGKI_SERVER/API/tampil_daftar_cafe_recommended.php";
     private String DAFTAR_CAFE_URL = "http://" + ipAddress + "/NONGKI_SERVER/API/tampil_daftar_cafe.php";
+    private TextView tvButtonCafeTerdekat;
+    private ImageView btnSearch;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +77,41 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvSemuaCafe);
         LinearLayoutManager layoutManager = new LinearLayoutManager(HomeActivity.this);
         recyclerView.setLayoutManager(layoutManager);
+        tvButtonCafeTerdekat=findViewById(R.id.tvButtonCafeTerdekat);
+        btnSearch=findViewById(R.id.btnSearch);
 
         loadRecommendedBanner();
         loadDaftarCafe();
+        setButtonCafeTerdekat();
+        setButtonSearch();
+        cekGPS();
+    }
+
+    private void cekGPS(){
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+    }
+
+    private void setButtonSearch(){
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, PencarianActivity.class);
+                intent.putParcelableArrayListExtra("data_cafe", listDaftarCafe);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setButtonCafeTerdekat(){
+        tvButtonCafeTerdekat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, CafeTerdekatActivity.class));
+            }
+        });
     }
 
 

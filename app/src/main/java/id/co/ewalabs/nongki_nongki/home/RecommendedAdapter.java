@@ -46,7 +46,7 @@ public class RecommendedAdapter extends PagerAdapter {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.recommended_item, container, false);
         final ImageView banner = view.findViewById(R.id.bannerSlider);
         imageLoader = CustomVolleyRequest.getInstance(context).getImageLoader();
-        imageLoader.get(bannerList.get(position).getThumbCafe(), ImageLoader.getImageListener(banner, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
+        imageLoader.get(bannerList.get(position).getThumbCafe(), ImageLoader.getImageListener(banner, R.drawable.bg_loading, android.R.drawable.ic_dialog_alert));
         ViewPager vp = (ViewPager) container;
         banner.setOnClickListener(new View.OnClickListener() {
             @Override

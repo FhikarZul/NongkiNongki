@@ -1,4 +1,4 @@
-package id.co.ewalabs.nongki_nongki.home;
+package id.co.ewalabs.nongki_nongki.home.pencarian;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,13 +15,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import id.co.ewalabs.nongki_nongki.R;
+import id.co.ewalabs.nongki_nongki.home.DaftarCafeModel;
 
-public class DaftarCafeAdapter extends RecyclerView.Adapter<DaftarCafeAdapter.MyViewHolder> {
+public class PencarianCafeAdapter extends RecyclerView.Adapter<PencarianCafeAdapter.MyViewHolder> {
 
     private Context context;
     private List<DaftarCafeModel> list;
 
-    public DaftarCafeAdapter(Context c, List<DaftarCafeModel> p) {
+    public PencarianCafeAdapter(Context c, List<DaftarCafeModel> p) {
         context = c;
         list = p;
 
@@ -30,15 +31,14 @@ public class DaftarCafeAdapter extends RecyclerView.Adapter<DaftarCafeAdapter.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.daftar_cafe_item, parent, false));
+        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.hasil_pencarian_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Picasso.get().load(list.get(position).getThumbCafe()).placeholder(R.drawable.bg_loading).into(holder.ivCafeThumb);
         holder.tvNamaCafe.setText(list.get(position).getNamaCafe());
-        holder.tvJumlahLike.setText(String.valueOf(list.get(position).getJumLike())+" Suka");
-        holder.tvJumlahKomentar.setText(String.valueOf(list.get(position).getJumKomentar())+" Komen");
+
 
 //        holder.onClick(position);
 
@@ -52,17 +52,16 @@ public class DaftarCafeAdapter extends RecyclerView.Adapter<DaftarCafeAdapter.My
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNamaCafe, tvJumlahLike, tvJumlahKomentar;
+        TextView tvNamaCafe;
         ImageView ivCafeThumb;
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            tvNamaCafe = itemView.findViewById(R.id.tvNamaCafe);
-            tvJumlahLike = itemView.findViewById(R.id.tvJumlahLike);
-            tvJumlahKomentar = itemView.findViewById(R.id.tvJumlahKomentar);
-            ivCafeThumb = itemView.findViewById(R.id.ivCafeThumb);
+            tvNamaCafe = itemView.findViewById(R.id.tvNamaCafeHasilPencarian);
+            ivCafeThumb = itemView.findViewById(R.id.ivHasilPencarian);
+
 
         }
 
